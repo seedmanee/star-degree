@@ -1,0 +1,12 @@
+This is an experiment similar to Six Degrees of Kevin Bacon
+http://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon
+
+what I want to compute is the minimum steps needed from "name1" to "name2"
+
+  key     python ./starDegree.py "name1" "name2"
+  or      python ./starDegree.py          
+  then watch steps needed from "Jaden Smith" to "Angelina Jolie" (surprise!)
+
+need lxml for Python
+-------------------------------------------------------------------------
+Very slow......
