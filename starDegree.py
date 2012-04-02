@@ -12,9 +12,13 @@ def nameURL(nameCode):
 
 def queryEngName(nameCode):
   url = 'http://www.imdb.com/name/' + nameCode + '/'
-  f = lxml.html.parse(url)
-  name = f.xpath('//h1[@class="header"]/text()')
-  return name[0].strip()
+  try:
+    f = lxml.html.parse(url)
+    name = f.xpath('//h1[@class="header"]/text()')
+    return name[0].strip()
+  except Exception as e:
+    print e.args
+    return [] 
 
 def queryNameCode(name):
   url = 'http://www.imdb.com/find?q=' + urllib.quote_plus(name) + '&s=all'
@@ -28,14 +32,18 @@ def queryNameCode(name):
   except Exception as e:
     print e.args
     print html
-    return None
+    return []
 
 def queryAllCast(titleCode):
   url = 'http://www.imdb.com/title/' + titleCode + '/fullcredits#cast'
-  f = lxml.html.parse(url)
-  names = f.xpath('//table[@class="cast"]//td[@class="nm"]/a/@href')
-  names = map(lambda x: x.split('/')[-2], names)  # /name/nm123456/ -> nm123456
-  return names
+  try:
+    f = lxml.html.parse(url)
+    names = f.xpath('//table[@class="cast"]//td[@class="nm"]/a/@href')
+    names = map(lambda x: x.split('/')[-2], names)  # /name/nm123456/ -> nm123456
+    return names
+  except Exception as e:
+    print e.args
+    return []
 
 # only query movie title
 def queryAllTitle(nameCode):
@@ -60,7 +68,7 @@ def queryAllTitle(nameCode):
 def fanoutName(nameCode):
   titles = queryAllTitle(nameCode)
   names = []
-  if not titles == None:
+  if len(titles)>0:
     for title in titles:
       names.extend( queryAllCast(title))
 
